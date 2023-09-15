@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { baseTheme } from '../styles/theme';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { $message } from '@/app/logic/MessageManager';
 import InputMask from 'react-input-mask';
 import { pay } from '@/app/logic/PayManager'
@@ -14,6 +14,7 @@ export default function Payment({ phone, price }: Payment) {
 
   /*----------------------------------ARGUMENTS----------------------------------*/
   const location = useLocation();
+  const navigate = useNavigate();
   const nameOperator = location.state.nameOperator;
 
   /*----------------------------------FUNCTIONS----------------------------------*/
@@ -26,6 +27,10 @@ export default function Payment({ phone, price }: Payment) {
     await pay(phone, price)
     .then((res) => {
       $message.showSuccess(res.type);
+
+      setTimeout(() => {
+        navigate('/',{ replace: false });
+      }, 1000);
     })
     .catch((error) => {
       $message.showError(error.message);
