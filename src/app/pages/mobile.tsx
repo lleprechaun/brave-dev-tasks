@@ -49,7 +49,7 @@ export default function Mobile() {
         <P>Выбрать существующий</P>
         {
           operators.map(op => (
-            <MobileOperators key={op.id} onClick={() => navigate('./payment', {state: {nameOperator: op.name}})}>
+            <MobileOperators key={op.id} onClick={() => navigate('/payment', {state: {nameOperator: op.name}})}>
               <Img
                 src={op.img}
               />
