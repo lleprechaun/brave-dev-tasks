@@ -1,15 +1,39 @@
-import styled from 'styled-components'
-import { baseTheme } from '../styles/theme'
+import styled from 'styled-components';
+import { baseTheme } from '../styles/theme';
 import { useLocation } from 'react-router-dom';
-import { $message } from '@/app/logic/MessageManager'
+import { $message } from '@/app/logic/MessageManager';
+import InputMask from 'react-input-mask';
+import { pay } from '@/app/logic/PayManager'
 
-export default function Payment() {
+type Payment = {
+  phone: string,
+  price: number,
+};
+
+export default function Payment({ phone, price }: Payment) {
 
   /*----------------------------------ARGUMENTS----------------------------------*/
   const location = useLocation();
   const nameOperator = location.state.nameOperator;
 
   /*----------------------------------FUNCTIONS----------------------------------*/
+
+  function priceCheck( e  : number) {
+    e > 1000 || e < 0 ? $message.showError('Сумма оплаты должны быть в пределах от 1 до 1000') : price = e
+  }
+
+  async function payment(phone : string, price : number) {
+    const res = await pay(phone, price);
+    console.log(res)
+    switch(res.payload) {
+      case true:
+        $message.showSuccess(res.type);
+        break;
+      case false:
+        $message.showError(res.type);
+        break;
+    }
+  }
   return (
       <Wrapper>
 		  <div style={{marginTop: '2vw'}}>
@@ -21,23 +45,22 @@ export default function Payment() {
           placeholder={nameOperator}
 			  />
 			  <P>Номер телефона</P>
-        <Input
-          type='tel'
-			    placeholder="+7(___)___-__-__"
-          required
-			    pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
-			    maxLength={12}
-			  />
+        <InputTel
+          placeholder="+7(___)___-__-__"
+          mask="+7(999)999-99-99"
+          onChange = {(e : any) => phone = e.target.value}
+        />
 			  <P>Сумма к оплате</P>
       	<Input
           type='number'
           max={1000}
           min={1}
+          onChange = {(e : any) => priceCheck(Number(e.target.value))}
         />
         <Input
           type='button'
           defaultValue={'Оплатить'}
-          onClick={() => $message.showSuccess()}
+          onClick={() => payment(phone, price)}
         />
 	  	</div>
       </Wrapper>
@@ -45,6 +68,7 @@ export default function Payment() {
 }
 
 /*----------------------------------STYLED----------------------------------*/
+
 const Wrapper = styled.div`
   margin-top: 2vw;
   display: flex;
@@ -90,5 +114,22 @@ const Input = styled.input`
 
   &[type="text"] {
     cursor: not-allowed;
+  }
+`;
+
+const InputTel = styled(InputMask)`
+  background: ${baseTheme.colors.bg};
+  padding: 10px 10px 5px 10px;
+  border: none;
+  border-bottom: 1px solid ${baseTheme.colors.border};
+  color: ${baseTheme.colors.font};
+  width: 100%;
+  font-size: ${baseTheme.fonts.title};
+  margin: 10px 0;
+
+  &:focus{
+    border: none;
+    border-bottom: 1px solid ${baseTheme.colors.border};
+    outline: none !important;
   }
 `;
