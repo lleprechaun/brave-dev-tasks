@@ -3,13 +3,18 @@ import styled from 'styled-components'
 import Mobile from '@/app/pages/mobile'
 import Payment from '@/app/pages/payment'
 import { baseTheme } from './styles/theme'
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 export default function Home() {
   return (
     <Wrapper>
-      <Header>Терминал оплаты мобильного телефона</Header>
-      <Mobile></Mobile>
-      <Payment></Payment>
+      <Router>
+        <Header>Терминал оплаты мобильного телефона</Header>
+        <Routes>
+          <Route path="/" element={ <Mobile /> } />
+          <Route path="/payment" element={ <Payment /> } />
+        </Routes>
+      </Router>
     </Wrapper>
   )
 }

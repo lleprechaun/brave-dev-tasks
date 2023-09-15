@@ -1,8 +1,12 @@
 import styled from 'styled-components'
 import { baseTheme } from '../styles/theme'
-import { useState } from 'react';
+import { use, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Mobile() {
+
+  /*----------------------------------ARGUMENTS----------------------------------*/
+  const navigate = useNavigate();
 
   const initialOperators = [
     { id: 1, name: 'МТС', img: '@/../images/mts.png', },
@@ -10,6 +14,7 @@ export default function Mobile() {
     { id: 3, name: 'Мегафон', img: '@/../images/megafon.png', },
   ];
   const [operators, setOperators] = useState(initialOperators);
+
   let nameOperator = '';
   /*----------------------------------FUNCTIONS----------------------------------*/
   function addNewOperator() {
@@ -44,7 +49,7 @@ export default function Mobile() {
         <P>Выбрать существующий</P>
         {
           operators.map(op => (
-            <MobileOperators key={op.id}>
+            <MobileOperators key={op.id} onClick={() => navigate('./payment', {state: {nameOperator: op.name}})}>
               <Img
                 src={op.img}
               />
@@ -73,7 +78,7 @@ const Input = styled.input`
 	border: none;
 	border-bottom: 1px solid ${baseTheme.colors.border};
 	color: ${baseTheme.colors.font};
-  font-size: 1max;
+  font-size: 1.5max;
   margin: 10px 0;
 
 	&:focus{
