@@ -15,11 +15,20 @@ export function errorMessage(newMessage: boolean): ChatActionTypes {
   }
 }
 
-export async function pay(phone: string, price: number) {
-	const randomBool = await Math.random() > 0.5 ? true : false;
-	if (randomBool) {
-		return successMessage(randomBool);
-	} else{
-		return errorMessage(randomBool);
-	}
-}
+export async function pay(phone: string, price: number): Promise<ChatActionTypes> {
+	return new Promise<ChatActionTypes>((resolve, reject) => {
+
+	  setTimeout(() => {
+		
+		const randomBool = Math.random() > 0.5 ? true : false;
+  
+		if (randomBool) {
+		  resolve(
+			successMessage(randomBool)
+		  );
+		} else {
+			reject(new Error(errorMessage(randomBool).type));
+		}
+	  }, 1000);
+	});
+  }

@@ -11,7 +11,7 @@ export default function Home() {
       <Router>
         <Header>Терминал оплаты мобильного телефона</Header>
         <Routes>
-          <Route path="/" element={ <Mobile /> } />
+          <Route path="" element={ <Mobile /> } />
           <Route path="payment" element={ <Payment phone='' price={0} /> } />
         </Routes>
       </Router>

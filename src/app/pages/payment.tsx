@@ -23,16 +23,13 @@ export default function Payment({ phone, price }: Payment) {
   }
 
   async function payment(phone : string, price : number) {
-    const res = await pay(phone, price);
-    console.log(res)
-    switch(res.payload) {
-      case true:
-        $message.showSuccess(res.type);
-        break;
-      case false:
-        $message.showError(res.type);
-        break;
-    }
+    await pay(phone, price)
+    .then((res) => {
+      $message.showSuccess(res.type);
+    })
+    .catch((error) => {
+      $message.showError(error.message);
+    });
   }
   return (
       <Wrapper>
