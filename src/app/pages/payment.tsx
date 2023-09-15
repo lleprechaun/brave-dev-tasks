@@ -1,10 +1,15 @@
 import styled from 'styled-components'
 import { baseTheme } from '../styles/theme'
 import { useLocation } from 'react-router-dom';
+import { $message } from '@/app/logic/MessageManager'
 
 export default function Payment() {
+
+  /*----------------------------------ARGUMENTS----------------------------------*/
   const location = useLocation();
   const nameOperator = location.state.nameOperator;
+
+  /*----------------------------------FUNCTIONS----------------------------------*/
   return (
       <Wrapper>
 		  <div style={{marginTop: '2vw'}}>
@@ -13,7 +18,7 @@ export default function Payment() {
           type='text'
           required
           disabled
-          defaultValue={nameOperator}
+          placeholder={nameOperator}
 			  />
 			  <P>Номер телефона</P>
         <Input
@@ -32,6 +37,7 @@ export default function Payment() {
         <Input
           type='button'
           defaultValue={'Оплатить'}
+          onClick={() => $message.showSuccess()}
         />
 	  	</div>
       </Wrapper>
@@ -76,8 +82,13 @@ const Input = styled.input`
     margin: 15px 0;
     border: 1px solid ${baseTheme.colors.border};
   }
+
   &[type="button"]:active {
     background: ${baseTheme.colors.bg};
     color: ${baseTheme.colors.font};
+  }
+
+  &[type="text"] {
+    cursor: not-allowed;
   }
 `;
