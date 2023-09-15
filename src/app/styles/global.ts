@@ -4,9 +4,10 @@ import { baseTheme } from './theme'
 
 export default createGlobalStyle`
   * {
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
+	  box-sizing: border-box;
+	  padding: 0;
+	  margin: 0;
+    font-family: Courier New, monospace;
   }
 
   html,
@@ -16,11 +17,12 @@ export default createGlobalStyle`
   }
   
   body {
-	background: ${baseTheme.colors.bg};
+	  background: ${baseTheme.colors.bg};
+    width: 95%;
   }
 
   a {
-	color: inherit;
-	text-decoration: none;
+	  color: inherit;
+	  text-decoration: none;
   }
 `

@@ -1,48 +1,110 @@
 import styled from 'styled-components'
 import { baseTheme } from '../styles/theme'
+import { useState } from 'react';
 
 export default function Mobile() {
-  const operators = [
-    {
-      id: 1,
-      name: 'МТС',
-      img: '@/../images/mts.png',
-    },
-    {
-      id: 2,
-      name: 'Билайн',
-      img: '@/../images/beeline.png',
-    },
-    {
-      id: 3,
-      name: 'Мегафон',
-      img: '@/../images/megafon.png',
-    },
+
+  const initialOperators = [
+    { id: 1, name: 'МТС', img: '@/../images/mts.png', },
+    { id: 2, name: 'Билайн', img: '@/../images/beeline.png', },
+    { id: 3, name: 'Мегафон', img: '@/../images/megafon.png', },
   ];
+  const [operators, setOperators] = useState(initialOperators);
+  let nameOperator = '';
+  /*----------------------------------FUNCTIONS----------------------------------*/
+  function addNewOperator() {
+    let index = operators[operators.length -1].id;
+    index = index + 1;
+    setOperators([
+      ...operators,
+      {
+        id: index,
+        name: nameOperator,
+        img: '',
+      }
+    ]);
+  };
+
   return (
     <div>
       <Wrapper>
-      {
-        operators.map(op => (
-          <MobileOperators key={op.id}>
-            <Img
-              src={op.img}
-            />
-            <Name>{op.name}</Name>
-          </MobileOperators>
-        ))
-      }
+        <Wrapper>
+          <Input
+            type='text'
+            placeholder='Добавить новый оператор'
+            onChange={(e) => nameOperator = e.target.value}
+          />
+          <Input
+            type='button'
+            defaultValue={'Добавить'}
+            onClick={addNewOperator}
+          />
+        </Wrapper>
+        
+        <P>Выбрать существующий</P>
+        {
+          operators.map(op => (
+            <MobileOperators key={op.id}>
+              <Img
+                src={op.img}
+              />
+              <P>{op.name}</P>
+            </MobileOperators>
+          ))
+        }
       </Wrapper>
     </div>
   )
 }
 
+/*----------------------------------STYLED----------------------------------*/
 const Wrapper = styled.div`
   margin-top: 2vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+`;
+
+const Input = styled.input`
+	background: ${baseTheme.colors.bg};
+	padding: 5px 10px 5px 10px;
+	border: none;
+	border-bottom: 1px solid ${baseTheme.colors.border};
+	color: ${baseTheme.colors.font};
+  font-size: 1max;
+  margin: 10px 0;
+
+	&:focus{
+		border: none;
+		border-bottom: 1px solid ${baseTheme.colors.border};
+		outline: none !important;
+	}
+
+  &[type="text"] {
+    width: 100%;
+    text-align: center;
+  }
+  &[type="text"]::placeholder {
+    text-align: center;
+  }
+
+  &[type="button"] {
+    background: ${baseTheme.colors.font};
+    border-radius: 20px;
+    color: ${baseTheme.colors.bg};
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 1vmax;
+    margin: 15px 0;
+    border: 1px solid ${baseTheme.colors.border};
+  }
+
+  &[type="button"]:active {
+    background: ${baseTheme.colors.bg};
+    color: ${baseTheme.colors.font};
+  }
 `;
 
 const MobileOperators = styled.div`
@@ -56,8 +118,9 @@ const MobileOperators = styled.div`
   padding: 5px 10px;
   cursor: pointer;
 
-  &:hover{
-    background: #000;
+  &:active {
+    background: ${baseTheme.colors.font};
+    border: 1px solid ${baseTheme.colors.border};
   }
 `;
 
@@ -68,14 +131,18 @@ const Img = styled.img`
   flex-grow:0;
 `;
 
-const Name = styled.p`
+const P = styled.p`
   border-color: ${baseTheme.colors.border};
   color: ${baseTheme.colors.font};
   font-size: ${baseTheme.fonts.title};
   border: none;
   cursor: inherit;
   text-align: start;
-  font-size: 2em;
+  font-size: ${baseTheme.fonts.title};
   flex-grow: 1;
+
+  &:active{
+    color: ${baseTheme.colors.bg};
+  }
 `;
 

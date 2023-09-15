@@ -11,7 +11,7 @@ export const baseTheme = {
 	},
   
 	fonts: {
-	  header: '4vmin',
-	  title: '',
+	  header: '3vmax',
+	  title: '2vmax',
 	},
   }
