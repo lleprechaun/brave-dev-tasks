@@ -22,7 +22,7 @@ export async function pay(phone: string, price: number): Promise<ChatActionTypes
 		
 		const randomBool = Math.random() > 0.5 ? true : false;
   
-		if (randomBool) {
+		if (randomBool && phone && price) {
 		  resolve(
 			successMessage(randomBool)
 		  );
