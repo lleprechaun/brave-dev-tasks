@@ -18,7 +18,6 @@ export default createGlobalStyle`
   
   body {
 	  background: ${baseTheme.colors.bg};
-    width: 95%;
   }
 
   a {
@@ -26,11 +25,10 @@ export default createGlobalStyle`
 	  text-decoration: none;
   }
 
-
   .alert {
     position: absolute;
     left: 0;
-    width: 96%;
+    width: 97%;
     height: auto;
     padding: 10px;
     margin: 10px;

@@ -1,20 +1,13 @@
 'use client'
 import styled from 'styled-components'
-import Mobile from '@/app/pages/mobile'
-import Payment from '@/app/pages/payment'
+import Mobile from '@/app/mobile/page'
 import { baseTheme } from './styles/theme'
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 export default function Home() {
   return (
     <Wrapper>
-      <Router>
         <Header>Терминал оплаты мобильного телефона</Header>
-        <Routes>
-          <Route path="/" element={ <Mobile /> } />
-          <Route path="/payment" element={ <Payment phone='' price={0} /> } />
-        </Routes>
-      </Router>
+        <Mobile /> 
     </Wrapper>
   )
 }

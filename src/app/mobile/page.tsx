@@ -1,12 +1,15 @@
+'use client'
 import styled from 'styled-components'
 import { baseTheme } from '../styles/theme'
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Mobile() {
 
   /*----------------------------------ARGUMENTS----------------------------------*/
-  const navigate = useNavigate();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
 
   const initialOperators = [
     { id: 1, name: 'МТС', img: '@/../images/mts.png', },
@@ -29,6 +32,12 @@ export default function Mobile() {
       }
     ]);
   };
+  
+  function redirectToPay(name : string) {
+    params.set('nameOperator', name)
+		router.push('payment')
+		router.replace(`/payment?${params}`);
+  }
 
   return (
     <div>
@@ -49,7 +58,7 @@ export default function Mobile() {
         <P>Выбрать существующий</P>
         {
           operators.map(op => (
-            <MobileOperators key={op.id} onClick={() => navigate('/payment', {state: {nameOperator: op.name}})}>
+            <MobileOperators key={op.id} onClick={() => {redirectToPay(op.name)}}>
               <Img
                 src={op.img}
               />

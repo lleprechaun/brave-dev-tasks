@@ -1,26 +1,29 @@
+'use client'
 import styled from 'styled-components';
 import { baseTheme } from '../styles/theme';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { $message } from '@/app/logic/MessageManager';
 import InputMask from 'react-input-mask';
 import { pay } from '@/app/logic/PayManager'
 
-type Payment = {
-  phone: string,
-  price: number,
+interface Pay {
+  params: {
+    phone: string,
+    price: number,
+  }
 };
 
-export default function Payment({ phone, price }: Payment) {
+export default function Payment({ params }: Pay) {
 
   /*----------------------------------ARGUMENTS----------------------------------*/
-  const location = useLocation();
-  const navigate = useNavigate();
-  const nameOperator = location.state.nameOperator;
+  const router = useRouter();
+  const pathname = useSearchParams();
+  let nameOperator = decodeURI(String(pathname).split('=')[1]);
 
   /*----------------------------------FUNCTIONS----------------------------------*/
 
   function priceCheck( e  : number) {
-    e > 1000 || e < 0 ? $message.showError('Сумма оплаты должны быть в пределах от 1 до 1000') : price = e
+    e > 1000 || e < 0 ? $message.showError('Сумма оплаты должны быть в пределах от 1 до 1000') : params.price = e
   }
 
   async function payment(phone : string, price : number) {
@@ -29,7 +32,7 @@ export default function Payment({ phone, price }: Payment) {
       $message.showSuccess(res.type);
 
       setTimeout(() => {
-        navigate('/',{ replace: false });
+        router.push('/');
       }, 1000);
     })
     .catch((error) => {
@@ -50,7 +53,7 @@ export default function Payment({ phone, price }: Payment) {
         <InputTel
           placeholder="+7(___)___-__-__"
           mask="+7(999)999-99-99"
-          onChange = {(e : any) => phone = e.target.value}
+          onChange = {(e : any) => params.phone = e.target.value}
         />
 			  <P>Сумма к оплате</P>
       	<Input
@@ -62,7 +65,7 @@ export default function Payment({ phone, price }: Payment) {
         <Input
           type='button'
           defaultValue={'Оплатить'}
-          onClick={() => payment(phone, price)}
+          onClick={() => payment(params.phone, params.price)}
         />
 	  	</div>
       </Wrapper>
